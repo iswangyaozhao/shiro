@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.shiro.mappers.SysUserRoleMapper">
+  <resultMap id="BaseResultMap" type="org.shiro.pojo.SysUserRole">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sys_user_id" jdbcType="INTEGER" property="sysUserId" />
+    <result column="sys_role_id" jdbcType="VARCHAR" property="sysRoleId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_user_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.shiro.pojo.SysUserRole">
+    insert into sys_user_role (id, sys_user_id, sys_role_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{sysUserId,jdbcType=INTEGER}, #{sysRoleId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="org.shiro.pojo.SysUserRole">
+    update sys_user_role
+    set sys_user_id = #{sysUserId,jdbcType=INTEGER},
+      sys_role_id = #{sysRoleId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sys_user_id, sys_role_id
+    from sys_user_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, sys_user_id, sys_role_id
+    from sys_user_role
+  </select>
+</mapper>

@@ -1,0 +1,11 @@
+org\shiro\dao\SysPermissionDao.class
+org\shiro\pojo\SysRolePermission.class
+org\shiro\dao\CommonDao.class
+org\shiro\pojo\SysPermission.class
+org\shiro\pojo\SysRole.class
+org\shiro\pojo\Grade.class
+org\shiro\pojo\SysUser.class
+org\shiro\pojo\Book.class
+org\shiro\pojo\SysUserRole.class
+org\shiro\dao\SysUserDao.class
+org\shiro\dao\SysRoleDao.class

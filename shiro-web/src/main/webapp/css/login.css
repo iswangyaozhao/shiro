@@ -1,0 +1,125 @@
+@CHARSET "UTF-8";
+
+button .btn {
+	font-size: 16px;
+	padding: 10px 0;
+}
+
+body {
+	background: #eeeeee;
+}
+
+.login-box {
+	width: 690px;
+	background: #fff;
+	/*height: 100px;*/
+	margin: 50px auto;
+	margin-top: 100px;
+	padding: 17px 28px;
+}
+
+.input-group-addon {
+	background: none;
+}
+
+.big-logo {
+	background-image: url(../images/logo_name.png);
+	background-position: 50%;
+	background-repeat: no-repeat;
+	border-bottom: 1px solid #eaeaea;
+	width: 100%;
+	height: 117px;
+	padding: 17px;
+	background-size:80%;
+}
+
+.big-logo-lc {
+	background-image: url(/front_style/image/logo_name_lc.png);
+	background-position: 50%;
+	background-repeat: no-repeat;
+	border-bottom: 1px solid #eaeaea;
+	width: 100%;
+	height: 117px;
+	padding: 17px;
+}
+
+.box-content {
+	padding: 35px;
+}
+
+form {
+	margin: auto;
+	width: 256px;
+}
+
+form .row button.btn {
+	font-size: 16px;
+	padding: 8px 0;
+}
+
+form .row .left-block button {
+	width: 100%;
+}
+
+form .row .right-block button {
+	float: right;
+	width: 67px;
+}
+
+form .row.btn-row {
+	margin-top: 20px;
+}
+
+form .row .left-block {
+	display: inline-block;
+	float: left;
+	width: 70%;
+}
+
+form .row .right-block {
+	display: inline-block;
+	float: right;
+	width: 30%;
+}
+
+.flex-row {
+	/* display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center; */
+	
+}
+
+.flex-row .right-block img {
+	float: right;
+	display: table-cell;
+	line-height:
+}
+
+form .row {
+	margin-top: 10px;
+}
+
+.input-group-addon {
+	min-width: 37px;
+}
+
+.page-info {
+	text-align: center;
+	position: absolute;
+	width: 100%;
+	/*bottom: 0;*/
+}
+
+.zhuce:hover {
+	color: #fff;
+	background: #58ae1f;
+	border-color: #58ae1f;
+}
+
+/*可能会变动*/ /*.input-group .form-control:last-child{border-left: none;}*/
+alert-row {
+	margin-top: 0;
+}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.shiro.dao.SysPermissionDao">
+	<insert id="add" parameterType="org.shiro.pojo.SysPermission"
+		useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		insert into Sys_Permission(name,type,url,percode,parentid,parentids,sortstring,available,level)
+			values(#{text},#{type},#{url},#{percode},#{parentid},#{parentids},#{sortstring},#{available},#{level})
+	</insert>
+	
+	<update id="update" parameterType="org.shiro.pojo.SysPermission">
+		update Sys_Permission set name = #{text},type = #{type},url = #{url},percode = #{percode},parentid = #{parentid},parentids = #{parentids},sortstring = #{sortstring},available = #{available},level = #{level}
+			where id = #{id}
+	</update>
+	
+	<delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from Sys_Permission where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	<select id="getPermissionsByUserId" resultType="org.shiro.pojo.SysPermission">
+		select *,name as text from sys_permission
+			where id in (select sys_permission_id from sys_role_permission where sys_role_id in(select sys_role_id from sys_user_role where sys_user_id = #{userId}))
+			and type = #{type}
+	</select>
+	<select id="getPermissionCodeByUserId" parameterType="int" resultType="org.shiro.pojo.SysPermission">
+		select percode from sys_permission
+			where id in (select sys_permission_id from sys_role_permission where sys_role_id in(select sys_role_id from sys_user_role where sys_user_id = #{id}))
+			and type ='permission'
+	</select>
+	<sql id="conditionSql">
+		<if test="condition != shiro">
+			<where>
+			</where>
+		</if>
+	</sql>
+	
+	<!-- 获取数据库中已有的Type -->
+	<select id="getPermissionType" resultType="org.shiro.pojo.SysPermission">
+		 SELECT * from Sys_Permission GROUP BY type
+	</select>
+	
+	<!-- 获取数据库中已有的level -->
+	<select id="getPermissionLevel" resultType="org.shiro.pojo.SysPermission">
+		 SELECT * from Sys_Permission GROUP BY level
+	</select>
+	
+	<resultMap type="org.shiro.pojo.SysPermission" id="permissionMap" autoMapping="true">
+		<id column="id" property="id"/>
+		<collection property="children" javaType="java.util.List" ofType="org.shiro.pojo.SysPermission" column="id" select="getPermissionByParentId"></collection>
+	</resultMap>
+	
+	<select id="getAll" resultMap="permissionMap">
+		select p.*,name as text from Sys_Permission as p where parentid is null
+	</select>
+	<!-- 根据父级id获取子权限 -->
+	<select id="getPermissionByParentId" parameterType="int" resultType="org.shiro.pojo.SysPermission">
+		select p.*,name as text from Sys_Permission p where parentid = #{id} 
+	</select>
+	<!-- 根据角色id删除所拥有的权限 -->
+	<delete id="deletePermissionsByRoleId" parameterType="int">
+		delete from sys_role_permission where sys_role_id = #{id}
+	</delete>
+	<!-- 为角色添加权限 -->
+	<insert id="addRolePermissions">
+		insert into sys_role_permission (sys_role_id, sys_permission_id) values   
+		<foreach collection="perIds" item="item" separator=",">
+		 	(#{roleId}, #{item})
+		</foreach>
+	</insert>
+	
+	<select id="getById" parameterType="int" resultType="org.shiro.pojo.SysPermission">
+		select p.*,name as text from Sys_Permission p where id = #{id}
+	</select>
+	<!-- 根据角色编号查询拥有的权限编号 -->
+	<select id="getPermissionIdsByRoleId" parameterType="int" resultType="java.lang.Integer">
+		select sys_permission_id from sys_role_permission where sys_role_id = #{id}
+	</select>
+	<select id="getListByCondition" resultType="org.shiro.pojo.SysPermission">
+		select * from Sys_Permission
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from Sys_Permission
+			<include refid="conditionSql"></include>
+	</select>
+</mapper>

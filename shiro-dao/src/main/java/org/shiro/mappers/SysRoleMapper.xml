@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.shiro.dao.SysRoleDao">
+  <resultMap id="BaseResultMap" type="org.shiro.pojo.SysRole">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="available" jdbcType="CHAR" property="available" />
+  </resultMap>
+  <delete id="deleteById" parameterType="java.lang.Integer">
+    delete from sys_role
+    where id = #{id}
+  </delete>
+  <insert id="add" parameterType="org.shiro.pojo.SysRole">
+    insert into sys_role (id, name, available
+      )
+    values (#{id}, #{name}, #{available}
+      )
+  </insert>
+  <update id="update" parameterType="org.shiro.pojo.SysRole">
+    update sys_role
+    set name = #{name},
+      available = #{available}
+    where id = #{id}
+  </update>
+  <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, name, available
+    from sys_role
+    where id = #{id}
+  </select>
+  <select id="getAll" resultMap="BaseResultMap">
+    select id, name, available
+    from sys_role
+  </select>
+  
+  <resultMap type="org.shiro.pojo.SysRole" id="roleMap" autoMapping="true">
+		<id column="id" property="id"/>
+	</resultMap>
+  <sql id="conditionSql">
+		<if test="condition != null">
+			<where>
+				<if test="condition.name != null and condition.name != ''">
+					name like concat('%',#{condition.name},'%')
+				</if>
+				<if test="condition.available != null and condition.available != ''">
+				available like concat('%',#{condition.available},'%')
+				</if>
+			</where>
+		</if>
+	</sql>
+	
+	<select id="getListByCondition" resultMap="roleMap">
+		select * from sys_role
+			<include refid="conditionSql"></include>
+		order by ${column} ${orderBy}
+			limit #{start},#{limit}
+	</select>
+	<select id="getCountByCondition" resultType="int">
+		select count(1) from sys_role
+			<include refid="conditionSql"></include>
+	</select>
+	<delete id="delSysUserRoleByRoleId" parameterType="java.lang.Integer">
+   	delete from sys_user_role where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+  </delete>
+  <delete id="deleteByIds" parameterType="java.lang.reflect.Array">
+		delete from sys_role where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>
